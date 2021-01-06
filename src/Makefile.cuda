@@ -1,0 +1,17 @@
+CXX = g++
+NVCC=nvcc
+CXXFLAGS = -DBUILD_WITH_CUDA_SUPPORT=1 -DCUDA_BLOCKS=512 -I. -I../common/ -std=c++14 -O3 -lcuda -lcudart
+DEPS = 
+OBJ = main.o simple_4arith_mod.o simple_mod.o simple_cuda.o
+
+%.o: %.cpp $(DEPS)
+	$(CXX) -c -o $@ $< $(CXXFLAGS)
+
+%.o: %.cu $(DEPS)
+	$(NVCC) -c -o $@ $< $(CXXFLAGS)
+	
+app: $(OBJ)
+	$(CXX) -o $@ $^ $(CXXFLAGS)
+
+clean:
+	rm -f *.o app
