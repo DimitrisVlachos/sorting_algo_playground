@@ -13,8 +13,8 @@ private:
     bool shared_host_ptr;
 
     inline void cleanup() {
-        if (!shared_host_ptr)
-            delete[] host_buf;
+        if (!shared_host_ptr && host_buf)
+            free( host_buf );
 
         if (dev_buf)
             cudaFree(dev_buf);
